@@ -6,7 +6,7 @@
 /*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:43:08 by gshekari          #+#    #+#             */
-/*   Updated: 2025/07/20 20:18:51 by gshekari         ###   ########.fr       */
+/*   Updated: 2025/07/21 20:59:00 by gshekari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,25 @@ int	validate_map (int fd)
 {
 	char **map;
 	char *line;
+	int i;
 
+	i = 0;
+	map = NULL;
 	line = get_next_line(fd);
-	map[i] = ft_strchr(line, ' ');
+	printf("%s\n" ,line);
+	map[i] = line;
+	printf("%s\n" ,map[i]);
+	//map[i] = ft_substr(line, 0, (ft_strlen(line) - 1));
+	i++;
 	while (line)
 	{
-		ft_printf("%s" , line);
+		printf("%s\n" ,"e");
 		line = get_next_line(fd);
+		map[i] = line;
+		//map[i] = ft_substr(line, 0, ft_strlen(line) - 1);
+		i++;
 	}
+	return (1);
 }
 int main (int argc, char **argv)
 {
@@ -50,6 +61,7 @@ int main (int argc, char **argv)
 		fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		return (ft_printf("Error\n"), exit(0), 1);
-
+	if (!validate_map(fd))
+		return (ft_printf("Error\n"), exit(0), 1);
 	return (0);
 }

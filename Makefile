@@ -1,5 +1,5 @@
 NAME = so_long
-SRCS = so_long.c main.c
+SRCS = so_long.c main.c init_map.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc

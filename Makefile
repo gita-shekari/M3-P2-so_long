@@ -1,15 +1,19 @@
 NAME = so_long
-SRCS = so_long.c main.c init_map.c
+
+SRCS = so_long.c main.c init_map.c validate_map.c
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
+MLX_LIB = minilibx-linux/libmlx_Linux.a
+LIBFT = libft/libft.a
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(MAKE) -C libft
-	$(CC) $(CFLAGS) $(OBJS) libft/libft.a -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_LIB) -lX11 -lXext -lm -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

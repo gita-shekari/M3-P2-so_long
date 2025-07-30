@@ -1,55 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_map.c                                         :+:      :+:    :+:   */
+/*   init_map->c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gshekari <gshekari@student->42->fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/27 17:44:17 by gshekari          #+#    #+#             */
-/*   Updated: 2025/07/27 19:50:29 by gshekari         ###   ########.fr       */
+/*   Updated: 2025/07/30 14:58:22 by gshekari         ###   ########->fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void free_map(char **map)
-{
-	int i;
-
-	i = 0;
-	while(map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-int	validate_map(char **map, size_t row, size_t col)
+void	free_map(t_game *game)
 {
 	size_t i;
-	size_t j;
 
 	i = 0;
-	j = 0;
-	while (i < row)
+	while(i < game->row)
 	{
-		j = 0;
-		while (j < col)
-		{
-			if(map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'P' && map[i][j] != 'C' && map[i][j] != 'E')
-				return (0);
-			if (map[0][j] != '1' || map[row-1][j] != '1')
-				return (0);
-			j++;
-		}
-		if (map[i][0] != '1' || map[i][col-1] != '1')
-			return (0);
+		free(game->map[i]);
 		i++;
 	}
-	return (1);
+	free(game->map);
 }
 
-int	is_map_file (char *file_name)
+int	is_map_file(char *file_name)
 {
 	char	*format;
 
@@ -63,34 +39,32 @@ int	is_map_file (char *file_name)
 	return (0);
 }
 
-int init_map(int fd, int count)
+int init_map(int fd, t_game *game)
 {
-	char **map;
-	char *line;
-	int i;
-	size_t line_size;
+	char	*line;
+	size_t	i;
 
-	line_size = 0;
-	map = (char **)malloc(sizeof(char *)*(count));
-	if (!map)
+	game->col = 0;
+	game->map = (char **)malloc(sizeof(char *)*(game->row));
+	if (!game->map)
 		return (perror("malloc failed"), 0);
 	i = 0;
-	while (i < count)
+	while (i < game->row)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			return (0);
-		if (line_size != 0 && line_size != ft_strlen(line) - 1)
+		if (game->col != 0 && game->col != ft_strlen(line) - 1)
 			return (free(line), 0);
-		line_size = ft_strlen(line) - 1;
-		map[i] = ft_substr(line, 0, line_size);
-		if (!map[i])
+		game->col = ft_strlen(line) - 1;
+		game->map[i] = ft_substr(line, 0, game->col);
+		if (!game->map[i])
 			return (free(line), 0);
 		free(line);
 		i++;
 	}
-	if(!validate_map(map, count, line_size))
-		return (free(map), 0);
+	if(!validate_map(game))
+		return (free_map(game), 0);
 	return (1);
 }
 

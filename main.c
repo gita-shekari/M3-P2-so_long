@@ -6,7 +6,7 @@
 /*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/20 15:43:08 by gshekari          #+#    #+#             */
-/*   Updated: 2025/07/30 21:41:21 by gshekari         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:08:00 by gshekari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char **argv)
 		return (ft_printf("Error: failed to reopen file\n"), 1);
 	if (!init_map(fd, &game))
 		return (ft_printf("Error: failed to initialize map\n"), exit(0), 1);
-	//so_long(&game);
+	so_long(&game);
 	close(fd);
 	return (0);
 }

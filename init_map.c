@@ -14,7 +14,7 @@
 
 void	free_map(t_game *game)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	while(i < game->row)
@@ -42,10 +42,10 @@ int	is_map_file(char *file_name)
 int init_map(int fd, t_game *game)
 {
 	char	*line;
-	size_t	i;
+	int		i;
 
 	game->col = 0;
-	game->map = (char **)malloc(sizeof(char *)*(game->row));
+	game->map = (char **)malloc(sizeof(char *)*(game->row + 1));
 	if (!game->map)
 		return (perror("malloc failed"), 0);
 	i = 0;
@@ -54,15 +54,16 @@ int init_map(int fd, t_game *game)
 		line = get_next_line(fd);
 		if (!line)
 			return (0);
-		if (game->col != 0 && game->col != ft_strlen(line) - 1)
+		if (game->col != 0 && game->col != (int)ft_strlen(line) - 1)
 			return (free(line), 0);
 		game->col = ft_strlen(line) - 1;
 		game->map[i] = ft_substr(line, 0, game->col);
 		if (!game->map[i])
-			return (free(line), 0);
+			return (free(line),free_map(game), 0);
 		free(line);
 		i++;
 	}
+	game->map[i] = NULL;
 	if(!validate_map(game))
 		return (free_map(game), 0);
 	return (1);

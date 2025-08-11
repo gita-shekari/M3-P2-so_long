@@ -6,7 +6,7 @@
 /*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/30 20:50:05 by gshekari          #+#    #+#             */
-/*   Updated: 2025/08/02 21:20:46 by gshekari         ###   ########.fr       */
+/*   Updated: 2025/08/11 19:06:50 by gshekari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,25 @@ int validate_elements(t_game *game)
 int	validate_path(t_game *game)
 {
 	t_game	temp;
-	int		i, j;
-	int		reached_c = 0;
-	int		reached_e = 0;
+	int		i;
+	int		j;
+	int		reached_c;
+	int		reached_e;
 
+	reached_c = 0;
+	reached_e = 0;
 	if (!copy_game(&temp, game))
 		return (0);
-	flood_fill(temp.map, temp.px, temp.py);
+	flood_fill(temp.map, temp.py, temp.px);
 	i = 0;
 	while (i < temp.row)
 	{
 		j = 0;
 		while (j < temp.col)
 		{
-			if (game->map[i][j] == 'C' && temp.map[i][j] == 'F')
+			if (game->map[i][j] == 'C' && temp.map[i][j] == 'R')
 				reached_c++;
-			if (game->map[i][j] == 'E' && temp.map[i][j] == 'F')
+			if (game->map[i][j] == 'E' && temp.map[i][j] == 'R')
 				reached_e = 1;
 			j++;
 		}
